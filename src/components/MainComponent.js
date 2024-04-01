@@ -9,16 +9,14 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
-const MainComponent = () => {
+const MainComponent = ({ navigation }) => {
+  const navToNewToDo = () => navigation.navigate("Add New To-Do");
   return (
-    <View style={styles.container}>
-      <StatusBar style="auto" />
-
-      <SafeAreaView style={styles.headingContainer}>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.headingContainer}>
         <Text style={styles.heading}>My To-do List</Text>
-      </SafeAreaView>
+      </View>
 
-      {/* <View style={styles.contentContainer}> */}
       <View style={styles.listContainer}>
         <View style={styles.listItemContainer}>
           <Text style={styles.listItem}>1. Make the to-do list</Text>
@@ -31,13 +29,11 @@ const MainComponent = () => {
         </View>
       </View>
 
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity style={styles.button} onPress={navToNewToDo}>
         <Ionicons name="add-circle-outline" size={24} color="black" />
         <Text> ADD NEW TO DO </Text>
       </TouchableOpacity>
-
-      {/* </View> */}
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -57,17 +53,12 @@ const styles = StyleSheet.create({
     color: "#FAFAFA",
     fontFamily: "Helvetica",
   },
-  // contentContainer: {
-  //   flex: 1,
-  //   padding: 20,
-  //   // backgroundColor: "#F4F4F4",
-  // },
+
   listContainer: {
     justifyContent: "flex-start",
     backgroundColor: "#F4F4F4",
     borderRadius: 20,
     margin: 20,
-    // padding:
     padding: 20,
   },
   listItemContainer: {
@@ -86,7 +77,6 @@ const styles = StyleSheet.create({
     padding: 10,
     margin: 20,
     borderRadius: 20,
-    // fontSize: 20,
   },
 });
 
