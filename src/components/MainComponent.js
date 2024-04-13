@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import {
   StyleSheet,
@@ -6,11 +6,14 @@ import {
   View,
   SafeAreaView,
   TouchableOpacity,
+  FlatList,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
 const MainComponent = ({ navigation }) => {
   const navToNewToDo = () => navigation.navigate("Add New To-Do");
+  const [todos, setTodos] = useState([]);
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.headingContainer}>
@@ -18,14 +21,8 @@ const MainComponent = ({ navigation }) => {
       </View>
 
       <View style={styles.listContainer}>
-        <View style={styles.listItemContainer}>
-          <Text style={styles.listItem}>1. Make the to-do list</Text>
-        </View>
-        <View style={styles.listItemContainer}>
-          <Text style={styles.listItem}>2. Upload Code to GitHub</Text>
-        </View>
-        <View style={styles.listItemContainer}>
-          <Text style={styles.listItem}>3. Submit Assignment</Text>
+        <View style={styles.listItem}>
+          <Text>List Item Here</Text>
         </View>
       </View>
 
@@ -56,18 +53,17 @@ const styles = StyleSheet.create({
 
   listContainer: {
     justifyContent: "flex-start",
-    backgroundColor: "#F4F4F4",
-    borderRadius: 20,
-    margin: 20,
-    padding: 20,
+    // backgroundColor: "yellow",
+    margin: 15,
+    padding: 10,
   },
-  listItemContainer: {
-    marginBottom: 10,
-  },
+
   listItem: {
-    fontSize: 16,
     fontFamily: "Helvetica",
-    marginBottom: 10,
+    backgroundColor: "#F4F4F4",
+    padding: 12,
+    borderRadius: 15,
+    marginBottom: 15,
   },
   button: {
     flexDirection: "row",

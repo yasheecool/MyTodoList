@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import {
   StyleSheet,
@@ -9,8 +9,20 @@ import {
   TextInput,
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 
 const AddNewToDoScreen = ({ navigation }) => {
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+
+  const saveBtnHandler = () => {
+    if (title.trim() && description.trim()) {
+      console.log("non empty values");
+      setTitle("");
+      setDescription("");
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.headingContainer}>
@@ -21,7 +33,14 @@ const AddNewToDoScreen = ({ navigation }) => {
         <Text style={styles.inputHeadingText}>Title</Text>
 
         <View style={styles.titleInput}>
-          <TextInput placeholder="Enter your text here"></TextInput>
+          <TextInput
+            placeholder="Enter the title of your To-do here!"
+            onChangeText={(val) => {
+              setTitle(val);
+              console.log(title);
+            }}
+            value={title}
+          ></TextInput>
         </View>
 
         <Text style={styles.inputHeadingText}>Description</Text>
@@ -29,20 +48,28 @@ const AddNewToDoScreen = ({ navigation }) => {
         <View>
           <TextInput
             multiline={true}
-            placeholder="Enter your text here"
+            placeholder="Enter the description of your To-do here!"
             style={styles.descInput}
             numberOfLines={3}
+            onChangeText={(val) => {
+              setDescription(val);
+              console.log(description);
+            }}
+            value={description}
           ></TextInput>
         </View>
       </View>
 
       <View style={styles.btnContainer}>
         <TouchableOpacity style={styles.button} onPress={navigation.goBack}>
-          <MaterialCommunityIcons name="cancel" size={20} color="black" />
-          <Text> CANCEL </Text>
+          <Ionicons name="arrow-back" size={20} color="black" />
+          <Text> BACK </Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => saveBtnHandler()}
+        >
           <MaterialCommunityIcons name="content-save" size={20} color="black" />
           <Text> SAVE </Text>
         </TouchableOpacity>
@@ -110,8 +137,8 @@ const styles = StyleSheet.create({
   },
 
   descInput: {
-    borderWidth: "1",
-    borderRadius: "5",
+    borderWidth: 1,
+    borderRadius: 5,
     padding: 5,
     marginTop: 3,
     // backgroundColor: "red",
