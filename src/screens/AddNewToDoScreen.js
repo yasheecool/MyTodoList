@@ -18,6 +18,7 @@ const AddNewToDoScreen = ({ navigation, route }) => {
   const saveBtnHandler = () => {
     if (title.trim() && description.trim()) {
       triggerNotification(true);
+      setTimeout(() => triggerNotification(false), 1500);
       addTodos({ title, description, id: todo.length + 1 });
       clearInputFields();
     }
