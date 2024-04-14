@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { AntDesign } from "@expo/vector-icons";
 
 export default TodoItem = ({ id, title, description }) => {
   const [expanded, setExpanded] = useState(false);
+  const [finished, setFinished] = useState(false);
 
   const toggleExpandedMode = () => {
     setExpanded(!expanded);
@@ -31,6 +33,17 @@ export default TodoItem = ({ id, title, description }) => {
       {expanded && (
         <View>
           <Text>{description}</Text>
+          <View style={styles.iconContainer}>
+            {!finished && (
+              <TouchableOpacity onPress={() => setFinished(true)}>
+                <Ionicons name="checkbox" size={22} color="green" />
+              </TouchableOpacity>
+            )}
+
+            <TouchableOpacity>
+              <AntDesign name="delete" size={22} color="red" />
+            </TouchableOpacity>
+          </View>
         </View>
       )}
     </View>
@@ -53,5 +66,10 @@ const styles = StyleSheet.create({
   },
   title: {
     flex: 1,
+  },
+  iconContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    marginTop: 15,
   },
 });
