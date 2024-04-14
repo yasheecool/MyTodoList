@@ -18,8 +18,8 @@ const AddNewToDoScreen = ({ navigation, route }) => {
   const saveBtnHandler = () => {
     if (title.trim() && description.trim()) {
       triggerNotification(true);
+      addTodos({ title, description, id: todo.length + 1 });
       clearInputFields();
-      addTodos({ title, description, isCompleted: false, id: todo.length + 1 });
     }
   };
 
@@ -38,6 +38,7 @@ const AddNewToDoScreen = ({ navigation, route }) => {
             onChangeText={(val) => {
               setTitle(val);
             }}
+            value={title}
           ></TextInput>
         </View>
 
@@ -52,6 +53,7 @@ const AddNewToDoScreen = ({ navigation, route }) => {
             onChangeText={(val) => {
               setDescription(val);
             }}
+            value={description}
           ></TextInput>
         </View>
       </View>
