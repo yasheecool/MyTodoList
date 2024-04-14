@@ -1,16 +1,10 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
-import { AntDesign } from "@expo/vector-icons";
+import { StyleSheet, Text, View } from "react-native";
+import Button from "./Button";
 
 export default TodoItem = ({ id, title, description, deleteFn }) => {
   const [expanded, setExpanded] = useState(false);
   const [finished, setFinished] = useState(false);
-
-  const toggleExpandedMode = () => {
-    setExpanded(!expanded);
-    console.log(expanded);
-  };
 
   return (
     <View style={styles.listItem}>
@@ -19,15 +13,13 @@ export default TodoItem = ({ id, title, description, deleteFn }) => {
           {id}. {title}
         </Text>
 
-        <TouchableOpacity style={styles.button} onPress={toggleExpandedMode}>
-          <Ionicons
-            name={
-              expanded ? "caret-up-circle-outline" : "caret-down-circle-outline"
-            }
-            size={22}
-            color="black"
-          />
-        </TouchableOpacity>
+        <Button
+          style={styles.button}
+          onClickFn={() => setExpanded(!expanded)}
+          iconName={
+            expanded ? "caret-up-circle-outline" : "caret-down-circle-outline"
+          }
+        />
       </View>
 
       {expanded && (
@@ -35,14 +27,18 @@ export default TodoItem = ({ id, title, description, deleteFn }) => {
           <Text> {description}</Text>
           <View style={styles.iconContainer}>
             {!finished && (
-              <TouchableOpacity onPress={() => setFinished(true)}>
-                <Ionicons name="checkbox" size={22} color="green" />
-              </TouchableOpacity>
+              <Button
+                onClickFn={() => setFinished(true)}
+                iconName={"checkbox"}
+                color={"green"}
+              />
             )}
 
-            <TouchableOpacity onPress={() => deleteFn(id)}>
-              <AntDesign name="delete" size={22} color="red" />
-            </TouchableOpacity>
+            <Button
+              onClickFn={() => deleteFn(id)}
+              iconName={"trash-sharp"}
+              color={"red"}
+            />
           </View>
         </View>
       )}
@@ -62,7 +58,6 @@ const styles = StyleSheet.create({
   titleIcon: {
     flexDirection: "row",
     width: "100%",
-    // backgroundColor: "yellow",
   },
   title: {
     flex: 1,

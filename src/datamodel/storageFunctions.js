@@ -6,7 +6,6 @@ export async function saveData(todoArray) {
 
   try {
     await AsyncStorage.setItem(key, data);
-    console.log("success");
   } catch (err) {
     console.log("failure", err);
   }

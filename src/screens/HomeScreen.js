@@ -1,17 +1,10 @@
 import React, { useState, useEffect } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  SafeAreaView,
-  TouchableOpacity,
-  FlatList,
-} from "react-native";
-import { Ionicons } from "@expo/vector-icons";
-import TodoItem from "./TodoItem";
+import { StyleSheet, Text, View, SafeAreaView, FlatList } from "react-native";
+import TodoItem from "../components/TodoItem";
+import Button from "../components/Button";
 import { saveData, loadData } from "../datamodel/storageFunctions";
 
-const MainComponent = ({ navigation }) => {
+const HomeScreen = ({ navigation }) => {
   const [todo, updateTodo] = useState([]);
 
   const addTodos = (newTodo) => {
@@ -65,10 +58,12 @@ const MainComponent = ({ navigation }) => {
         ></FlatList>
       </View>
 
-      <TouchableOpacity style={styles.button} onPress={navToNewToDo}>
-        <Ionicons name="add-circle-outline" size={24} color="black" />
-        <Text> ADD NEW TO DO </Text>
-      </TouchableOpacity>
+      <Button
+        style={styles.button}
+        onClickFn={navToNewToDo}
+        iconName={"add-circle-outline"}
+        text={"ADD NEW TO DO"}
+      />
     </SafeAreaView>
   );
 };
@@ -77,6 +72,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
+    justifyContent: "space-between",
   },
   headingContainer: {
     alignItems: "center",
@@ -94,16 +90,9 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     margin: 15,
     padding: 10,
+    flex: 1,
   },
 
-  listItem: {
-    fontFamily: "Helvetica",
-    backgroundColor: "#F4F4F4",
-    padding: 12,
-    borderRadius: 15,
-    marginBottom: 15,
-    flexDirection: "row",
-  },
   button: {
     flexDirection: "row",
     justifyContent: "center",
@@ -115,4 +104,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MainComponent;
+export default HomeScreen;

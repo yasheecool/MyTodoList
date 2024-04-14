@@ -1,14 +1,7 @@
-import React, { useState, useEffect } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  SafeAreaView,
-  TouchableOpacity,
-  TextInput,
-} from "react-native";
-import Notification from "./Notification";
-import { Ionicons } from "@expo/vector-icons";
+import React, { useState } from "react";
+import { StyleSheet, Text, View, SafeAreaView, TextInput } from "react-native";
+import Notification from "../components/Notification";
+import Button from "../components/Button";
 
 const AddNewToDoScreen = ({ navigation, route }) => {
   const [title, setTitle] = useState("");
@@ -24,7 +17,7 @@ const AddNewToDoScreen = ({ navigation, route }) => {
 
   const saveBtnHandler = () => {
     if (title.trim() && description.trim()) {
-      triggerNotification(true); //Triggering Notification
+      triggerNotification(true);
       clearInputFields();
       addTodos({ title, description, isCompleted: false, id: todo.length + 1 });
     }
@@ -66,18 +59,19 @@ const AddNewToDoScreen = ({ navigation, route }) => {
       {displayingNotification && <Notification />}
 
       <View style={styles.btnContainer}>
-        <TouchableOpacity style={styles.button} onPress={navigation.goBack}>
-          <Ionicons name="arrow-back" size={20} color="black" />
-          <Text> BACK </Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
+        <Button
           style={styles.button}
-          onPress={() => saveBtnHandler()}
-        >
-          <Ionicons name="save-sharp" size={20} color="black" />
-          <Text> SAVE </Text>
-        </TouchableOpacity>
+          onClickFn={navigation.goBack}
+          iconName={"arrow-back"}
+          text={"BACK"}
+        />
+
+        <Button
+          style={styles.button}
+          onClickFn={saveBtnHandler}
+          iconName={"save-sharp"}
+          text={"SAVE"}
+        />
       </View>
     </SafeAreaView>
   );
