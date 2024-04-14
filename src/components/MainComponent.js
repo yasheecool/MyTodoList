@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -9,22 +9,47 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import TodoItem from "./TodoItem";
+import { saveData, loadData } from "../datamodel/storageFunctions";
 
 const MainComponent = ({ navigation }) => {
-  // const todoStructure = {
-  //   id: 1,
-  //   title: "First Title",
-  //   description: "Description",
-  //   isCompleted: false,
-  // };
   const [todo, updateTodo] = useState([]);
 
   const addTodos = (newTodo) => {
     updateTodo([...todo, newTodo]);
+    saveData(todo); //Saving data to storage
+  };
+
+  useEffect(() => {
+    const firstLoad = async () => {
+      const data = await loadData();
+      updateTodo(data);
+    };
+    firstLoad();
+  }, []);
+
+  useEffect(() => {
+    saveData(todo);
+  }, [todo]);
+
+  const deleteTodo = (idx) => {
+    const newTasks = [...todo];
+    newTasks.splice(todo.length - 1, 1);
+    updateTodo(newTasks);
   };
 
   const navToNewToDo = () =>
     navigation.navigate("Add New To-Do", { todo, addTodos });
+
+  const renderList = ({ item }) => {
+    return (
+      <TodoItem
+        id={item.id}
+        title={item.title}
+        description={item.description}
+        deleteFn={deleteTodo}
+      ></TodoItem>
+    );
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -35,20 +60,8 @@ const MainComponent = ({ navigation }) => {
       <View style={styles.listContainer}>
         <FlatList
           data={todo}
-          renderItem={({ item }) => {
-            console.log(item);
-            return (
-              <TodoItem
-                id={item.id}
-                title={item.title}
-                description={item.description}
-              ></TodoItem>
-              // <View style={styles.listItem}>
-              //   <Text>{item.id}. </Text>
-              //   <Text>{item.title}</Text>
-              // </View>
-            );
-          }}
+          renderItem={renderList}
+          keyExtractor={(currTask) => currTask.id.toString()}
         ></FlatList>
       </View>
 
@@ -79,7 +92,6 @@ const styles = StyleSheet.create({
 
   listContainer: {
     justifyContent: "flex-start",
-    // backgroundColor: "yellow",
     margin: 15,
     padding: 10,
   },
