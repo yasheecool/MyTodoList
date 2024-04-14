@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
 import {
   StyleSheet,
@@ -9,17 +9,40 @@ import {
   TextInput,
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, AntDesign } from "@expo/vector-icons";
 
-const AddNewToDoScreen = ({ navigation }) => {
+const AddNewToDoScreen = ({ navigation, route }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [isVisible, setIsVisible] = useState(false);
+  const { todo, addTodos } = route.params;
+  console.log(todo.length);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsVisible(false);
+    }, 1000);
+  }, [isVisible]);
+
+  const clearInputFields = () => {
+    setTitle("");
+    setDescription("");
+  };
+
+  const Notification = () => {
+    return (
+      <View style={styles.notification}>
+        <AntDesign name="infocirlceo" size={20} color="black" />
+        <Text>To-Do successfully added !</Text>
+      </View>
+    );
+  };
 
   const saveBtnHandler = () => {
     if (title.trim() && description.trim()) {
-      console.log("non empty values");
-      setTitle("");
-      setDescription("");
+      setIsVisible(true); //Triggering Notification
+      clearInputFields();
+      addTodos({ title, description, isCompleted: false, id: todo.length + 1 });
     }
   };
 
@@ -28,7 +51,6 @@ const AddNewToDoScreen = ({ navigation }) => {
       <View style={styles.headingContainer}>
         <Text style={styles.heading}>Add New To-do Item</Text>
       </View>
-
       <View style={styles.inputContainer}>
         <Text style={styles.inputHeadingText}>Title</Text>
 
@@ -37,7 +59,6 @@ const AddNewToDoScreen = ({ navigation }) => {
             placeholder="Enter the title of your To-do here!"
             onChangeText={(val) => {
               setTitle(val);
-              console.log(title);
             }}
             value={title}
           ></TextInput>
@@ -53,12 +74,13 @@ const AddNewToDoScreen = ({ navigation }) => {
             numberOfLines={3}
             onChangeText={(val) => {
               setDescription(val);
-              console.log(description);
             }}
             value={description}
           ></TextInput>
         </View>
       </View>
+
+      {isVisible && <Notification />}
 
       <View style={styles.btnContainer}>
         <TouchableOpacity style={styles.button} onPress={navigation.goBack}>
@@ -101,6 +123,14 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
   },
 
+  notification: {
+    alignSelf: "center",
+    backgroundColor: "#7abfeb",
+    padding: 10,
+    borderRadius: 15,
+    flexDirection: "row",
+  },
+
   button: {
     flexDirection: "row",
     justifyContent: "center",
@@ -109,13 +139,11 @@ const styles = StyleSheet.create({
     padding: 10,
     margin: 20,
     borderRadius: 20,
-    // fontSize: 20,
   },
 
   inputContainer: {
     margin: 20,
     flex: 1,
-    // backgroundColor: "yellow",
   },
 
   inputHeadingText: {
@@ -126,14 +154,12 @@ const styles = StyleSheet.create({
   },
 
   titleInput: {
-    // backgroundColor: "red",
     height: 30,
     marginBottom: 15,
     marginTop: 3,
     borderWidth: "1",
     borderRadius: "5",
     padding: 5,
-    // margin: 10,
   },
 
   descInput: {
@@ -141,7 +167,6 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 5,
     marginTop: 3,
-    // backgroundColor: "red",
   },
 });
 

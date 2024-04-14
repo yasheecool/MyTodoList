@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { StatusBar } from "expo-status-bar";
 import {
   StyleSheet,
   Text,
@@ -9,10 +8,23 @@ import {
   FlatList,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import TodoItem from "./TodoItem";
 
 const MainComponent = ({ navigation }) => {
-  const navToNewToDo = () => navigation.navigate("Add New To-Do");
-  const [todos, setTodos] = useState([]);
+  // const todoStructure = {
+  //   id: 1,
+  //   title: "First Title",
+  //   description: "Description",
+  //   isCompleted: false,
+  // };
+  const [todo, updateTodo] = useState([]);
+
+  const addTodos = (newTodo) => {
+    updateTodo([...todo, newTodo]);
+  };
+
+  const navToNewToDo = () =>
+    navigation.navigate("Add New To-Do", { todo, addTodos });
 
   return (
     <SafeAreaView style={styles.container}>
@@ -21,9 +33,23 @@ const MainComponent = ({ navigation }) => {
       </View>
 
       <View style={styles.listContainer}>
-        <View style={styles.listItem}>
-          <Text>List Item Here</Text>
-        </View>
+        <FlatList
+          data={todo}
+          renderItem={({ item }) => {
+            console.log(item);
+            return (
+              <TodoItem
+                id={item.id}
+                title={item.title}
+                description={item.description}
+              ></TodoItem>
+              // <View style={styles.listItem}>
+              //   <Text>{item.id}. </Text>
+              //   <Text>{item.title}</Text>
+              // </View>
+            );
+          }}
+        ></FlatList>
       </View>
 
       <TouchableOpacity style={styles.button} onPress={navToNewToDo}>
@@ -64,6 +90,7 @@ const styles = StyleSheet.create({
     padding: 12,
     borderRadius: 15,
     marginBottom: 15,
+    flexDirection: "row",
   },
   button: {
     flexDirection: "row",
