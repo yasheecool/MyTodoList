@@ -9,9 +9,7 @@ export default TodoItem = ({ id, title, description, deleteFn }) => {
   return (
     <View style={styles.listItem}>
       <View style={styles.titleIcon}>
-        <Text style={styles.title}>
-          {id}. {title}
-        </Text>
+        <Text style={styles.title}>{title}</Text>
 
         <Button
           style={styles.button}

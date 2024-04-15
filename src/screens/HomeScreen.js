@@ -7,11 +7,6 @@ import { saveData, loadData } from "../datamodel/storageFunctions";
 const HomeScreen = ({ navigation }) => {
   const [todo, updateTodo] = useState([]);
 
-  const addTodos = (newTodo) => {
-    updateTodo([...todo, newTodo]);
-    saveData(todo); //Saving data to storage
-  };
-
   useEffect(() => {
     const firstLoad = async () => {
       const data = await loadData();
@@ -24,14 +19,22 @@ const HomeScreen = ({ navigation }) => {
     saveData(todo);
   }, [todo]);
 
-  const deleteTodo = (idx) => {
-    const newTasks = [...todo];
-    newTasks.splice(todo.length - 1, 1);
-    updateTodo(newTasks);
+  function addNewTodo(title, description) {
+    // console.log("add function called");
+    updateTodo((prevTodos) => [
+      ...prevTodos,
+      { title, description, id: prevTodos.length },
+    ]);
+  }
+
+  const deleteTodo = (itmId) => {
+    console.log("id", itmId);
+    const newTodo = todo.filter((todo) => todo.id !== itmId);
+    updateTodo(newTodo);
   };
 
   const navToNewToDo = () =>
-    navigation.navigate("Add New To-Do", { todo, addTodos });
+    navigation.navigate("Add New To-Do", { addNewTodo });
 
   const renderList = ({ item }) => {
     return (
@@ -39,7 +42,7 @@ const HomeScreen = ({ navigation }) => {
         id={item.id}
         title={item.title}
         description={item.description}
-        deleteFn={deleteTodo}
+        deleteFn={() => deleteTodo(item.id)}
       ></TodoItem>
     );
   };

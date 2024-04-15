@@ -2,13 +2,14 @@ import React, { useState } from "react";
 import { StyleSheet, Text, View, SafeAreaView, TextInput } from "react-native";
 import Notification from "../components/Notification";
 import Button from "../components/Button";
+import { saveData } from "../datamodel/storageFunctions";
 
 const AddNewToDoScreen = ({ navigation, route }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [displayingNotification, triggerNotification] = useState(false);
 
-  const { todo, addTodos } = route.params;
+  const { addNewTodo } = route.params;
 
   const clearInputFields = () => {
     setTitle("");
@@ -19,7 +20,7 @@ const AddNewToDoScreen = ({ navigation, route }) => {
     if (title.trim() && description.trim()) {
       triggerNotification(true);
       setTimeout(() => triggerNotification(false), 1500);
-      addTodos({ title, description, id: todo.length + 1 });
+      addNewTodo(title, description);
       clearInputFields();
     }
   };
